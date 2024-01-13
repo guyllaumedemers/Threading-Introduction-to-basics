@@ -19,13 +19,29 @@
 //SOFTWARE.
 
 #include <chrono>
+#include <functional>
 #include <mutex>
 #include <stdio>
 #include <thread>
+#include <utility>
+
+template<typename T>
+using TRef = typename std::ref<T>;
+
+typedef std::thread FThread;
+
+struct FThreadMaker {
+
+	template<typename TFunctor, typename ... TArgs>
+	static FThread&& StartThread(TFunctor&& function_object, TArgs&& args...) {
+
+		return FThread(function_object, std::forward<TArgs>(args)...);
+	}
+};
 
 int main(int argc, char* argv[]) {
 
-	// Simple example - 3x Coworkers start the day with their own cup of coffee full. The office coffee machine start full.
+	// Simple example - 3x Coworkers start the day with their coffee cup full. The office coffee machine also start full.
 	// 
 	//					During the day, they each empty their cup and go to the machine for a refill. Only one person can refill
 	//					at a time. Each person, drinking at about the same pace.
@@ -43,10 +59,10 @@ int main(int argc, char* argv[]) {
 		float fill_percent = 100.f;
 		static const float drinking_rate = 4.f;
 
-		const char* CupOwner = "";
+		const char* cup_owner = "";
 		uint32_t number_cup_consumed = 0;
 
-		FCup(const char* Owner) : CupOwner(Owner) {
+		FCup(const char* owner) : cup_owner(owner) {
 
 			last = FClock::now();
 		};
@@ -55,9 +71,6 @@ int main(int argc, char* argv[]) {
 
 		void Tick()
 		{
-			// we need to be able to check for the state of the coffee machine as the thread would need to stop 
-
-			// Core loop
 
 			const FTime now = FClock::now();
 			const FDuration delta_time = (now - last);
@@ -79,7 +92,7 @@ int main(int argc, char* argv[]) {
 
 		void Print() const
 		{
-			puts(CupOwner + ": " + fill_percent);
+			puts(cup_owner + ": " + fill_percent);
 		}
 	};
 
@@ -102,9 +115,24 @@ int main(int argc, char* argv[]) {
 
 	FCoffeeMachine OfficeMachine;
 
+	// create anonymous function to be performed on each thread
+	const auto lambda = [](TRef<FCup> CoffeeCup, TRef<FCoffeeMachine> CoffeeMachine) {
+
+		while (!CoffeeMachine.IsEmpty()) {
+
+			CoffeeCup.Tick();
+		}
+		};
+
+	// start thread for each coworkers
+	FThread ThreadA = FThreadMaker::StartThread(lambda, CupA, OfficeMachine);
+	FThread ThreadB = FThreadMaker::StartThread(lambda, CupB, OfficeMachine);
+	FThread ThreadC = FThreadMaker::StartThread(lambda, CupC, OfficeMachine);
+
 	while (!OfficeMachine.IsEmpty()) {
 
-		// wdwdh ?
+		// to be define - not sure what I want to do here
+		std::this_thread::yield();
 	}
 
 	return 0;
