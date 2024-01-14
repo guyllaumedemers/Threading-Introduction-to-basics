@@ -187,10 +187,10 @@ int main(int argc, char* argv[]) {
 	FCoffeeMachine OfficeMachine;
 
 	// create anonymous function to be performed on each thread
-	auto const lambda = [](std::reference_wrapper<FCup> coffee_cup, std::reference_wrapper<FCoffeeMachine> coffee_mchine)
+	auto const lambda = [](std::reference_wrapper<FCup> coffee_cup, std::reference_wrapper<FCoffeeMachine> coffee_machine)
 		{
 
-			FCoffeeMachine& Machine = coffee_mchine.get();
+			FCoffeeMachine& Machine = coffee_machine.get();
 			while (!Machine.IsEmpty()) {
 
 				coffee_cup.get().Tick(Machine);
