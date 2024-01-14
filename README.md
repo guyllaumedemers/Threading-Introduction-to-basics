@@ -28,14 +28,6 @@ Be aware that some of the tooling used in the making of this `Demo` project won'
 
 ### Mutex-based
 
-[link](https://github.com/guyllaumedemers/Threading-Introduction-to-basics/blob/master/simple-concurrency/Main.cc)
-
-##### Example - MSVC Development Toolkit Cmd-line
-
-```
-C:> cl /std:c++17 Main.cc		(Main.obj, Main.exe)
-```
-
 ```
 // example of a simple concurrent application using lock-based mechanism (Mutex)
 
@@ -47,3 +39,13 @@ Simple example	-	3x Coworkers start the day with their coffee cup full. The offi
 Goal		-	Which of the three coworker will have to refill the machine?
 
 ```
+
+##### Example - MSVC Development Toolkit Cmd-line
+
+```
+C:> cl /std:c++17 Main.cc		(Main.obj, Main.exe)
+```
+
+**Hint** : Example location path - [link](https://github.com/guyllaumedemers/Threading-Introduction-to-basics/blob/master/simple-concurrency/Main.cc).
+
+## More examples coming soon!...
