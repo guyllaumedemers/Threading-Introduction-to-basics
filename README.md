@@ -18,11 +18,11 @@ Be aware that some of the tooling used in the making of this `Demo` project won'
 
 ## What's a Mutex
 
-**Wikipedia** : ""
+**Wikipedia** : "A `lock` or `mutex` (from [mutual exclusion](https://en.wikipedia.org/wiki/Mutual_exclusion)) is a synchronization primitive that prevents state from being modified or accessed by multiple threads of execution at once."
 
 ## What's an atomic type
 
-**Wikipedia** : ""
+**Cppreference** : "Objects of `atomic` types are the only objects that are free from data races; that is, they may be modified by two threads concurrently or modified by one and read by another."
 
 # Building with multithreading in mind
 
