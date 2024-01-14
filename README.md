@@ -46,6 +46,6 @@ Goal		-	Which of the three coworker will have to refill the machine?
 C:> cl /std:c++17 Main.cc		(Main.obj, Main.exe)
 ```
 
-**Hint** : Example location path - [link](https://github.com/guyllaumedemers/Threading-Introduction-to-basics/blob/master/simple-concurrency/Main.cc).
+**Hint** : Example location [path](https://github.com/guyllaumedemers/Threading-Introduction-to-basics/blob/master/simple-concurrency/Main.cc).
 
 ## More examples coming soon!...
