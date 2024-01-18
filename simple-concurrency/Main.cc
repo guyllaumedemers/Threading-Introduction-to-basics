@@ -165,7 +165,7 @@ void FCoffeeMachine::RefillCup(FCup& coffee_cup)
 		SLEEP_THREAD_FOR_X_SECOND(1);
 	}
 
-	if (IsEmpty()) {
+	if (IsEmpty() && last_person_who_emptied_machine == "") {
 
 		last_person_who_emptied_machine = coffee_cup.cup_owner;
 	}
@@ -202,21 +202,7 @@ int main(int argc, char* argv[]) {
 	FThread ThreadB = FThreadMaker::StartThread(lambda, std::ref(CupB), std::ref(OfficeMachine));
 	FThread ThreadC = FThreadMaker::StartThread(lambda, std::ref(CupC), std::ref(OfficeMachine));
 
-	// detach so they run in the background (initial approach - until I realize there's a data race in the statement at line 224)
-	// ThreadA.detach();
-	// ThreadB.detach();
-	// ThreadC.detach();
-
-	// watchout possible data race with the execution here as the thing blocking the main thread is the IsEmpty statement
-	// Main thread unblock as soon as this becomes 'true' which means the statement below for : who's last coffee machine user might not have been set yet.
-	while (!OfficeMachine.IsEmpty()) {
-
-		// our main thread just wait for other threads to empty the office coffee machine
-		// and will close the application once empty.
-		std::this_thread::yield();
-	}
-
-	// alternative solution to data race at statement line 224.
+// join threads so execution of main thread blocks until all thread completes
 	ThreadA.join();
 	ThreadB.join();
 	ThreadC.join();
